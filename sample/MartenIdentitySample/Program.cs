@@ -8,7 +8,7 @@ using Weasel.Core;
 using Marten.Schema.Identity;
 using Marten.Schema;
 using Marten.Identity;
-using IdentityRole = Marten.Identity.IdentityRole;
+using MartenIdentitySample;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,8 +48,7 @@ builder.Services.AddMarten(options =>
     options.Schema.For<ApplicationRole>()
         .IdStrategy(new CombGuidIdGeneration())
         .UniqueIndex(UniqueIndexType.Computed, x => x.NormalizedName);
-
-});
+}).UseLightweightSessions();
 
 builder.Services
     .AddIdentityCore<ApplicationUser>()

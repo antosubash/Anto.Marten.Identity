@@ -1,0 +1,65 @@
+@page "/users"
+@using Marten
+@using MartenIdentitySample.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject IDocumentSession DocumentSession
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+
+@if (users != null)
+{
+    <QuickGrid Items="users" PageSize="10">
+        <PropertyColumn Title="User Name" Property="@(u => u.UserName)" />
+        <PropertyColumn Title="Email" Property="@(u => u.Email)" />
+        <PropertyColumn Title="Roles" Property="@(u => string.Join(", ", u.Roles))" />
+        <Column Title="Actions">
+            <Template>
+                <button class="btn btn-primary" @onclick="() => EditUser(@context.Id)">Edit</button>
+                <button class="btn btn-danger" @onclick="() => DeleteUser(@context.Id)">Delete</button>
+            </Template>
+        </Column>
+    </QuickGrid>
+}
+
+
+
+@code {
+    private IQueryable<ApplicationUser> users;
+    private ApplicationUser newUser = new ApplicationUser();
+    private string password;
+    protected override async Task OnInitializedAsync()
+    {
+        var allUsers = await DocumentSession.Query<ApplicationUser>().ToListAsync();
+
+        users = allUsers.Select(u => new ApplicationUser
+            {
+                UserName = u.UserName,
+                Email = u.Email,
+                Roles = u.Roles
+            }).AsQueryable();
+    }
+
+
+    private async Task CreateUser()
+    {
+        
+    }
+
+    private void EditUser(Guid id)
+    {
+        // Redirect to a user details page or show a modal to edit user details
+    }
+
+    private async Task DeleteUser(Guid id)
+    {
+        
+    }
+}

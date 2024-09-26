@@ -376,14 +376,14 @@ internal class UserStore<TUser> :
         }
     }
 
-    public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    public async Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-        return _session.Query<TUser>().FirstOrDefaultAsync(x => x.Id == Guid.Parse(userId), cancellationToken);
+        return await _session.Query<TUser>().FirstOrDefaultAsync(x => x.Id == Guid.Parse(userId), cancellationToken);
     }
 
-    public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+    public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-        return _session.Query<TUser>()
+        return await _session.Query<TUser>()
             .FirstOrDefaultAsync(x => x.NormalizedUserName == normalizedUserName, cancellationToken);
     }
 
@@ -432,10 +432,10 @@ internal class UserStore<TUser> :
         return Task.FromResult(result);
     }
 
-    public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+    public async Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return _session.Query<TUser>().FirstOrDefaultAsync(u =>
+        return await _session.Query<TUser>().FirstOrDefaultAsync(u =>
             u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey));
     }
 
