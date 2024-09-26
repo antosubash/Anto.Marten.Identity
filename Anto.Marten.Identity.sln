@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity", "src\Anto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F403A1B1-1876-477C-A8E3-215BC27F4063}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity.IntegrationTests", "tests\Marten.Identity.IntegrationTests\Marten.Identity.IntegrationTests.csproj", "{151BB843-B70C-4A72-88C4-61D0BB8F4F4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity.IntegrationTests", "tests\Marten.Identity.IntegrationTests\Anto.Marten.Identity.IntegrationTests.csproj", "{151BB843-B70C-4A72-88C4-61D0BB8F4F4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity.UnitTests", "tests\Marten.Identity.UnitTests\Marten.Identity.UnitTests.csproj", "{65D00F63-69F6-49B0-9080-9DCFE393DB3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity.UnitTests", "tests\Marten.Identity.UnitTests\Anto.Marten.Identity.UnitTests.csproj", "{65D00F63-69F6-49B0-9080-9DCFE393DB3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

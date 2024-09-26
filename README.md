@@ -1,6 +1,11 @@
-# Marten.Identity
+# Anto.Marten.Identity
 MartenDB provider for ASP.NET Core Identity framework.
-Heavily inspired by [Cosmos.Identity](https://github.com/loresoft/Cosmos.Identity).
+This is a fork of [Marten.Identity](https://github.com/Renzs90/Marten.Identity) with some changes and improvements.
+
+## Installation
+```bash
+dotnet add package Anto.Marten.Identity
+```
 
 ## Usage
 appsettings.json configuration
