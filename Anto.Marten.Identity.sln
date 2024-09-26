@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity", "src\Marten.Identity\Marten.Identity.csproj", "{9BDFAB22-1D85-48DB-9423-79549CD276DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marten.Identity", "src\Anto.Marten.Identity\Anto.Marten.Identity.csproj", "{9BDFAB22-1D85-48DB-9423-79549CD276DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F403A1B1-1876-477C-A8E3-215BC27F4063}"
 EndProject

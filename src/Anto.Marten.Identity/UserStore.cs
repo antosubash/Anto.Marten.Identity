@@ -31,10 +31,12 @@ internal class UserStore<TUser> :
 
     public IQueryable<TUser> Users => _session.Query<TUser>();
 
-    public Task SetTokenAsync(TUser user, string loginProvider, string name, string value,
+    public async Task SetTokenAsync(TUser user, string loginProvider, string name, string value,
         CancellationToken cancellationToken)
     {
         ValidateParameters(user, cancellationToken);
+
+        // Find the token with the same login provider and name
 
         var token = user.Tokens
             .FirstOrDefault(t => t.LoginProvider == loginProvider && t.Name == name);
@@ -51,7 +53,7 @@ internal class UserStore<TUser> :
 
         token.Value = value;
         
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     public Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)

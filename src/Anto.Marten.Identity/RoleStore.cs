@@ -20,14 +20,14 @@ internal class RoleStore<TRole> :
         _session.Dispose();
     }
 
-    public async Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
+    public async Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken = default)
     {
         try
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(role, nameof(role));
             _session.Store(role);
-
             await _session.SaveChangesAsync(cancellationToken);
-
             return IdentityResult.Success;
         }
         catch (Exception ex)
@@ -36,14 +36,14 @@ internal class RoleStore<TRole> :
         }
     }
 
-    public async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
+    public async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken = default)
     {
         try
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(role, nameof(role));
             _session.Update(role);
-        
             await _session.SaveChangesAsync(cancellationToken);
-
             return IdentityResult.Success;
         }
         catch (Exception ex)
@@ -52,14 +52,14 @@ internal class RoleStore<TRole> :
         }
     }
 
-    public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
+    public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken = default)
     {
         try
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(role, nameof(role));
             _session.Delete(role);
-
             await _session.SaveChangesAsync(cancellationToken);
-
             return IdentityResult.Success;
         }
         catch (Exception ex)
@@ -68,40 +68,33 @@ internal class RoleStore<TRole> :
         }
     }
 
-    public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
+    public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
-
         return Task.FromResult(role.Id.ToString());
     }
 
-    public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
+    public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
-
         return Task.FromResult(role.Name);
     }
 
-    public Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken)
+    public async Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken = default)
     {
-        if (roleName == null)
-            throw new ArgumentNullException(nameof(roleName));
-
         ValidateParameters(role, cancellationToken);
-
         role.Name = roleName;
-
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
-    public Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
+    public Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
 
         return Task.FromResult(role.NormalizedName);
     }
 
-    public Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken)
+    public async Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken = default)
     {
         if (normalizedName == null)
             throw new ArgumentNullException(nameof(normalizedName));
@@ -109,23 +102,27 @@ internal class RoleStore<TRole> :
         ValidateParameters(role, cancellationToken);
 
         role.NormalizedName = normalizedName;
-        return Task.CompletedTask;
+
+        _session.Update(role);
+        await _session.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+    public async Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken = default)
     {
-        return _session.Query<TRole>().FirstAsync(x => x.Id == Guid.Parse(roleId), cancellationToken);
+        return await _session.Query<TRole>().FirstAsync(x => x.Id == Guid.Parse(roleId), cancellationToken);
     }
 
-    public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+    public async Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken = default)
     {
-        return _session.Query<TRole>()
+        cancellationToken.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(normalizedRoleName, nameof(normalizedRoleName));
+        return await _session.Query<TRole>()
             .FirstAsync(x => x.NormalizedName == normalizedRoleName, cancellationToken);
     }
 
     public IQueryable<TRole> Roles => _session.Query<TRole>();
 
-    public Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = new())
+    public Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
 
@@ -136,7 +133,7 @@ internal class RoleStore<TRole> :
         return Task.FromResult<IList<Claim>>(claims);
     }
 
-    public Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
+    public Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
 
@@ -153,7 +150,7 @@ internal class RoleStore<TRole> :
         return Task.CompletedTask;
     }
 
-    public Task RemoveClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
+    public Task RemoveClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = default)
     {
         ValidateParameters(role, cancellationToken);
 
@@ -170,7 +167,7 @@ internal class RoleStore<TRole> :
         return Task.CompletedTask;
     }
 
-    private static void ValidateParameters(IdentityRole role, CancellationToken cancellationToken)
+    private static void ValidateParameters(IdentityRole role, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
