@@ -45,7 +45,7 @@ builder.Services.AddMarten(options =>
         .IdStrategy(new CombGuidIdGeneration())
         .UniqueIndex(UniqueIndexType.Computed, x => x.NormalizedUserName, x => x.NormalizedEmail);
 
-    options.Schema.For<IdentityRole>()
+    options.Schema.For<ApplicationRole>()
         .IdStrategy(new CombGuidIdGeneration())
         .UniqueIndex(UniqueIndexType.Computed, x => x.NormalizedName);
 
@@ -53,7 +53,7 @@ builder.Services.AddMarten(options =>
 
 builder.Services
     .AddIdentityCore<ApplicationUser>()
-    .AddRoles<IdentityRole>()
+    .AddRoles<ApplicationRole>()
     .AddSignInManager()
     .AddMartenStores()
     .AddDefaultTokenProviders();
@@ -63,13 +63,13 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 var app = builder.Build();
 
-//// Apply schema changes on startup
-//using (var scope = app.Services.CreateScope())
-//{
-//    var store = scope.ServiceProvider.GetRequiredService<IDocumentStore>();
-//    await store.Advanced.Clean.CompletelyRemoveAllAsync(); // Optional: If you need to clean the schema before migrations (not for production)
-//    await store.Storage.ApplyAllConfiguredChangesToDatabaseAsync();
-//}
+// Apply schema changes on startup
+using (var scope = app.Services.CreateScope())
+{
+    var store = scope.ServiceProvider.GetRequiredService<IDocumentStore>();
+    await store.Advanced.Clean.CompletelyRemoveAllAsync(); // Optional: If you need to clean the schema before migrations (not for production)
+    await store.Storage.ApplyAllConfiguredChangesToDatabaseAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
